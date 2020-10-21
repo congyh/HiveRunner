@@ -38,7 +38,7 @@ import static org.junit.Assert.assertEquals;
  * All HiveRunner tests should run with the StandaloneHiveRunner and have a reference to HiveShell.
  */
 @ExtendWith(HiveRunnerExtension.class)
-public class HelloHiveRunner {
+public class HelloHiveRunner { // Note: This example is the non-annotated version of HelloHiveRunner. for annotated version, please check HelloAnnotatedHiveRunner
 
     @HiveSQL(files = {})
     private HiveShell shell;

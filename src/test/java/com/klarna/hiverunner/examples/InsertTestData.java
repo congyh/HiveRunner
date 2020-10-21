@@ -63,7 +63,7 @@ public class InsertTestData {
     }
 
     @Test
-    public void insertRowsFromCodeWithSelectedColumns() {
+    public void insertRowsFromCodeWithSelectedColumns() { // Note: Only insert partial columns.
         shell.insertInto("source_db", "test_table")
                 .withColumns("col_a", "col_c")
                 .addRow("Value1", true)

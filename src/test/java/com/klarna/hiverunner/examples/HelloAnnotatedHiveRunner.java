@@ -59,7 +59,7 @@ public class HelloAnnotatedHiveRunner {
     @HiveProperties
     public Map<String, String> hiveProperties = MapUtils.putAll(new HashMap(), new Object[] {
             "MY.HDFS.DIR", "${hadoop.tmp.dir}",
-            "my.schema", "bar",
+            "my.schema", "bar", // Note: Test database name.
         });
 
     /**
@@ -69,7 +69,7 @@ public class HelloAnnotatedHiveRunner {
      * There may be multiple setup scripts but the order of execution is undefined.
      */
     @HiveSetupScript
-    private String createSchemaScript = "create schema ${hiveconf:my.schema}";
+    private String createSchemaScript = "create schema ${hiveconf:my.schema}"; // Note: We need to create database first.
 
     /**
      * Create some data in the target directory. Note that the 'targetFile' references the
@@ -77,7 +77,7 @@ public class HelloAnnotatedHiveRunner {
      * <p/>
      * This example is for defining the data in line as a string.
      */
-    @HiveResource(targetFile = "${hiveconf:MY.HDFS.DIR}/foo/data_from_string.csv")
+    @HiveResource(targetFile = "${hiveconf:MY.HDFS.DIR}/foo/data_from_string.csv") // Note: Data here will be pending to table "foo"
     private String dataFromString = "2,World\n3,!";
 
     /**
@@ -86,7 +86,7 @@ public class HelloAnnotatedHiveRunner {
      * <p/>
      * This example is for defining the data in in a resource file.
      */
-    @HiveResource(targetFile = "${hiveconf:MY.HDFS.DIR}/foo/data_from_file.csv")
+    @HiveResource(targetFile = "${hiveconf:MY.HDFS.DIR}/foo/data_from_file.csv") // Note: Data here will be pending to table "foo"
     private File dataFromFile =
             new File(ClassLoader.getSystemResource("helloHiveRunner/hello_hive_runner.csv").getPath());
 
