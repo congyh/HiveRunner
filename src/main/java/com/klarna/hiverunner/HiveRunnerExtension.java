@@ -40,7 +40,7 @@ import com.klarna.hiverunner.builder.Script;
 import com.klarna.hiverunner.config.HiveRunnerConfig;
 import com.klarna.reflection.ReflectionUtils;
 
-public class HiveRunnerExtension implements AfterEachCallback, TestInstancePostProcessor {
+public class HiveRunnerExtension implements AfterEachCallback, TestInstancePostProcessor { // Note: TestInstancePostProcessor is called when test case created.
 
   private static final Logger LOGGER = LoggerFactory.getLogger(HiveRunnerExtension.class);
 
@@ -58,7 +58,7 @@ public class HiveRunnerExtension implements AfterEachCallback, TestInstancePostP
   public void postProcessTestInstance(Object target, ExtensionContext extensionContext) {
     setupConfig(target);
     try {
-      basedir = Files.createTempDirectory("hiverunner_test");
+      basedir = Files.createTempDirectory("hiverunner_test"); // Note: Useful method in jdk to create a temp directory in default filesystem's temp dir.
       container = createHiveServerContainer(scriptsUnderTest, target, basedir);
     } catch (IOException e) {
       throw new UncheckedIOException(e);
@@ -68,15 +68,15 @@ public class HiveRunnerExtension implements AfterEachCallback, TestInstancePostP
 
   private void setupConfig(Object target) {
     Set<Field> fields = ReflectionUtils.getAllFields(target.getClass(),
-        Predicates.and(
+        Predicates.and( // Note: Predicates is a guava class.
             withAnnotation(HiveRunnerSetup.class),
-            withType(HiveRunnerConfig.class)));
+            withType(HiveRunnerConfig.class))); // Note: Get all fields that is of type HiveRunnerConfig and with HiveRunnerSetup annotated.
 
     Preconditions.checkState(fields.size() <= 1,
         "Only one field of type HiveRunnerConfig should be annotated with @HiveRunnerSetup");
 
-    if (!fields.isEmpty()) {
-      config.override(ReflectionUtils
+    if (!fields.isEmpty()) { // Note: Filed size  = 1
+      config.override(ReflectionUtils // Note: Get the instance of HiveRunnerConfig.
           .getFieldValue(target, fields.iterator().next().getName(), HiveRunnerConfig.class));
     }
   }
@@ -104,6 +104,6 @@ public class HiveRunnerExtension implements AfterEachCallback, TestInstancePostP
 
   @Override
   public void afterEach(ExtensionContext extensionContext) {
-    tearDown(extensionContext.getRequiredTestInstance());
+    tearDown(extensionContext.getRequiredTestInstance()); // Note: Tear down container after each test method.
   }
 }

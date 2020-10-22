@@ -156,7 +156,7 @@ class HiveShellBase implements HiveShell {
 
         lexer = new StatementLexer(cwd, Charset.defaultCharset(), commandShellEmulator);
 
-        hiveServerContainer.init(hiveConf, hiveVars);
+        hiveServerContainer.init(hiveConf, hiveVars); // Note: Start the HiveServer
 
         executeSetupScripts();
 

@@ -79,14 +79,14 @@ class HiveRunnerCore {
     HiveShellContainer shell = hiveShellBuilder.buildShell();
 
     // Set shell
-    shellSetter.setShell(shell);
+    shellSetter.setShell(shell); // Note: inject the hiveshell instance to test case.
 
     if (shellSetter.isAutoStart()) {
       shell.start();
     }
     return shell;
   }
-
+  // Note: Load all scripts defined at HiveSQL
   private HiveShellField loadScriptUnderTest(Object testCaseInstance, HiveShellBuilder hiveShellBuilder) {
     try {
       Set<Field> fields = ReflectionUtils.getAllFields(testCaseInstance.getClass(), withAnnotation(HiveSQL.class));
@@ -97,7 +97,7 @@ class HiveRunnerCore {
       List<Path> scriptPaths = new ArrayList<>();
       HiveSQL annotation = field.getAnnotation(HiveSQL.class);
       for (String scriptFilePath : annotation.files()) {
-        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI());
+        Path file = Paths.get(Resources.getResource(scriptFilePath).toURI()); // Note: Paths is in jdk, Resources is in guava.
         assertFileExists(file);
         scriptPaths.add(file);
       }
@@ -112,7 +112,7 @@ class HiveRunnerCore {
       return new HiveShellField() {
         @Override
         public void setShell(HiveShell shell) {
-          ReflectionUtils.setField(testCaseInstance, field.getName(), shell);
+          ReflectionUtils.setField(testCaseInstance, field.getName(), shell); // Note: Set shell to field of test case.
         }
 
         @Override

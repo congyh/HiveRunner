@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * HiveShellContainer implementation that will do a full tear down of the hive server after test method is executed.
  */
-class HiveShellTearable extends HiveShellBase implements HiveShellContainer {
+class HiveShellTearable extends HiveShellBase implements HiveShellContainer { // Note: HiveShellContainer is used for teardown hiveshell
 
     HiveShellTearable(HiveServerContainer hiveServerContainer, Map<String, String> hiveConf,
                       List<String> setupScripts, List<HiveResource> resources,
